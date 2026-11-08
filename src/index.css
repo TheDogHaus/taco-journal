@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/* ---- Design tokens: warm, playful. Dark mode follows the OS. ---- */
+:root {
+  color-scheme: light dark;
+  --backdrop: #f3e2c0;
+  --bg: #fff3dc;
+  --surface: #fffdf8;
+  --ink: #3b2417;
+  --muted: #7a5b47;
+  --line: #ebd3ab;
+  --salsa: #d93a1e;
+  --salsa-text: #b72e14;
+  --salsa-soft: #ffd9cf;
+  --on-salsa: #ffffff;
+  --lime: #4f8a24;
+  --lime-soft: #ddf0c3;
+  --sun: #f7b21b;
+  --sun-soft: #ffe8a8;
+  --shadow: #3b2417;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --backdrop: #170d07;
+    --bg: #20130c;
+    --surface: #2d1b12;
+    --ink: #ffefd6;
+    --muted: #c9ab93;
+    --line: #4d3222;
+    --salsa: #ff7a5c;
+    --salsa-text: #ff8f76;
+    --salsa-soft: #5a2418;
+    --on-salsa: #2b0f07;
+    --lime: #9bd467;
+    --lime-soft: #2f4420;
+    --sun: #ffc94a;
+    --sun-soft: #5a431a;
+    --shadow: #0b0503;
+  }
+}
+
+@theme inline {
+  --color-backdrop: var(--backdrop);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-salsa: var(--salsa);
+  --color-salsa-text: var(--salsa-text);
+  --color-salsa-soft: var(--salsa-soft);
+  --color-on-salsa: var(--on-salsa);
+  --color-lime: var(--lime);
+  --color-lime-soft: var(--lime-soft);
+  --color-sun: var(--sun);
+  --color-sun-soft: var(--sun-soft);
+  --font-display: "Fredoka", ui-rounded, "Nunito", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  background: var(--backdrop);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+:focus-visible {
+  outline: 3px solid var(--salsa);
+  outline-offset: 2px;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full border-2 border-ink px-5 py-2.5 font-display text-base font-semibold transition;
+    box-shadow: 3px 3px 0 var(--shadow);
+  }
+  .btn:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--shadow);
+  }
+  .btn:disabled {
+    @apply cursor-not-allowed opacity-50;
+  }
+  .btn-primary {
+    @apply bg-salsa text-on-salsa;
+  }
+  .btn-secondary {
+    @apply bg-surface text-ink;
+  }
+  .btn-ghost {
+    @apply border-transparent bg-transparent text-ink;
+    box-shadow: none;
+  }
+  .btn-danger {
+    @apply bg-surface text-salsa-text;
+  }
+  .btn-sm {
+    @apply min-h-10 px-4 py-1.5 text-sm;
+  }
+
+  .card {
+    @apply rounded-3xl border-2 border-line bg-surface p-4;
+  }
+
+  .chip {
+    @apply inline-flex min-h-10 cursor-pointer items-center gap-1.5 rounded-full border-2 border-line bg-surface px-3.5 py-1 text-sm font-bold text-ink transition;
+  }
+  .chip[aria-pressed="true"] {
+    @apply border-ink bg-sun-soft;
+    box-shadow: 2px 2px 0 var(--shadow);
+  }
+
+  .field {
+    @apply w-full rounded-2xl border-2 border-line bg-surface px-4 py-3 text-base text-ink placeholder:text-muted/70;
+  }
+  .field:focus {
+    @apply border-ink outline-none;
+  }
+
+  .label {
+    @apply mb-1.5 block font-display text-sm font-semibold text-ink;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.pop-in {
+  animation: pop-in 0.25s ease-out;
+}
