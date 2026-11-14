@@ -48,7 +48,7 @@ export function JournalPage() {
         <p className="px-4 text-muted">Warming up the tortillas…</p>
       ) : views.length === 0 ? (
         <EmptyState emoji="🌮" title="Your journal is hungry">
-          <p>Log your first taco in about 15 seconds. Just a photo, the spot, and how it was.</p>
+          <p>Log your first taco in about 15 seconds. Just the spot and how it was. Add a photo if you like.</p>
           <div className="mt-6 flex flex-col gap-3">
             <Link to="/capture" className="btn btn-primary">
               Log my first taco

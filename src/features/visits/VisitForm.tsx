@@ -120,11 +120,8 @@ export function VisitForm({
   const [today] = useState(() => toDateInput(new Date().toISOString()))
   const patch =(p: Partial<FormState>) => setS((prev) => ({ ...prev, ...p }))
 
-  const missing = [
-    s.photos.length === 0 && 'a photo',
-    !s.name.trim() && 'the restaurant',
-    !s.reaction && 'how it was',
-  ].filter(Boolean) as string[]
+  // Photos are optional; only the restaurant and the reaction are required.
+  const missing = [!s.name.trim() && 'the restaurant', !s.reaction && 'how it was'].filter(Boolean) as string[]
 
   const toggleDish = (name: string) => {
     const has = s.dishes.some((d) => normalize(d.name) === normalize(name))
@@ -178,7 +175,7 @@ export function VisitForm({
     <div className="pb-44">
       <TopBar title={title} back="close" />
       <div className="space-y-4 px-4 pt-4">
-        <Section emoji="📸" title="Photos" hint="At least one, up to three.">
+        <Section emoji="📸" title="Photos" hint="Optional, up to three.">
           <PhotoPicker photos={s.photos} onChange={(photos) => patch({ photos })} />
         </Section>
 

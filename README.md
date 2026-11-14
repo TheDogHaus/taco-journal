@@ -22,7 +22,8 @@ On the empty Journal screen, tap **Try it with sample tacos** to see it populate
   "To finish" on the Journal.
 - **Full entry** (`/visit/new`, `/visit/:id/edit`): rating (half stars), would-return,
   dishes, mood, occasion, who with, salsa heat, price, notes, favorite.
-- Minimum for any entry: **restaurant, reaction, and at least one photo** (max 3 per visit).
+- Minimum for any entry (quick bite or full entry): **restaurant and reaction**. Photos
+  are optional, up to 3 per visit.
 - Search with filters, restaurant pages, and an Insights screen.
 
 ## Connecting Supabase

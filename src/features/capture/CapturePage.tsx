@@ -30,11 +30,8 @@ export function CapturePage() {
   // Default to the city of your most recent visit until you type your own.
   const cityValue = cityTouched ? city : (views[0]?.restaurant.city ?? '')
 
-  const missing = [
-    photos.length === 0 && 'a photo',
-    !name.trim() && 'the restaurant',
-    !reaction && 'how it was',
-  ].filter(Boolean) as string[]
+  // A photo is optional for a quick bite; you can add one later when you finish the entry.
+  const missing = [!name.trim() && 'the restaurant', !reaction && 'how it was'].filter(Boolean) as string[]
 
   const toggleTaco = (taco: string) =>
     setTacos((prev) =>
@@ -78,7 +75,10 @@ export function CapturePage() {
     <div className="pb-40">
       <TopBar title="Quick bite 🌮" back="close" />
       <div className="space-y-5 px-4 pt-4">
-        <PhotoPicker photos={photos} onChange={setPhotos} />
+        <div>
+          <p className="label">Photo (optional)</p>
+          <PhotoPicker photos={photos} onChange={setPhotos} />
+        </div>
 
         <RestaurantField
           name={name}
