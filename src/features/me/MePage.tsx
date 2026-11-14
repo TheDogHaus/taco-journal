@@ -3,6 +3,7 @@ import { Icon } from '../../components/Icon'
 import { useToast } from '../../components/Toast'
 import { useClearAll, useLoadSampleData, useVisitViews } from '../../data/hooks'
 import { repo } from '../../data'
+import { isSupabaseConfigured } from '../../lib/supabase'
 
 export function MePage() {
   const toast = useToast()
@@ -23,7 +24,10 @@ export function MePage() {
   }
 
   const onClear = async () => {
-    if (!window.confirm('Erase your whole journal, including photos, from this device? This can’t be undone.')) return
+    const message = isSupabaseConfigured
+      ? 'Permanently delete all your entries and photos from your account? This can’t be undone.'
+      : 'Erase your whole journal, including photos, from this device? This can’t be undone.'
+    if (!window.confirm(message)) return
     await clearAll.mutateAsync()
     toast.show('Journal cleared.')
   }
@@ -50,14 +54,28 @@ export function MePage() {
         </section>
 
         <section className="card space-y-2">
-          <h2 className="font-display text-lg font-semibold">
-            <span aria-hidden="true">📱</span> Stored on this device
-          </h2>
-          <p className="text-sm text-muted">
-            For now your journal lives in this browser only — {views.length}{' '}
-            {views.length === 1 ? 'entry' : 'entries'}. Clearing your browser data will erase it, so export now and
-            then. Accounts and cloud sync are coming.
-          </p>
+          {isSupabaseConfigured ? (
+            <>
+              <h2 className="font-display text-lg font-semibold">
+                <span aria-hidden="true">☁️</span> Saved to your account
+              </h2>
+              <p className="text-sm text-muted">
+                {views.length} {views.length === 1 ? 'entry' : 'entries'}, backed up privately and available on any
+                device you sign in on.
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="font-display text-lg font-semibold">
+                <span aria-hidden="true">📱</span> Stored on this device
+              </h2>
+              <p className="text-sm text-muted">
+                Demo mode: your journal lives in this browser only — {views.length}{' '}
+                {views.length === 1 ? 'entry' : 'entries'}. Clearing your browser data will erase it, so export now
+                and then.
+              </p>
+            </>
+          )}
         </section>
 
         <section className="card space-y-3">

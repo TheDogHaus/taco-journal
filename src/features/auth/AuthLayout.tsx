@@ -1,7 +1,32 @@
+import type { ReactNode } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
+import { isSupabaseConfigured } from '../../lib/supabase'
 
-/** Shell for signed-out screens. Sends signed-in people back into the app. */
+/** Branded frame shared by every signed-out screen. */
+export function AuthShell({ children }: { children: ReactNode }) {
+  return (
+    <div className="px-5 pt-10 pb-10">
+      <div className="mb-7 text-center">
+        <div className="mx-auto mb-4 grid size-24 place-items-center rounded-full border-2 border-ink bg-sun-soft text-5xl shadow-[4px_4px_0_var(--shadow)]">
+          <span aria-hidden="true">🌮</span>
+        </div>
+        <p className="font-display text-4xl leading-none font-bold">Taco Journal</p>
+        <p className="mt-2 text-muted">Every taco worth remembering.</p>
+      </div>
+
+      <div className="card space-y-5 border-ink p-5 shadow-[4px_4px_0_var(--shadow)]">{children}</div>
+
+      {!isSupabaseConfigured && (
+        <p className="mt-6 text-center text-xs text-muted">
+          Demo mode · accounts stay on this device until Supabase is connected.
+        </p>
+      )}
+    </div>
+  )
+}
+
+/** Sign in / create account routes. Sends signed-in people back into the app. */
 export function AuthLayout() {
   const { status } = useAuth()
   const location = useLocation()
@@ -13,23 +38,9 @@ export function AuthLayout() {
   }
 
   return (
-    <div className="px-5 pt-10 pb-10">
-      <div className="mb-7 text-center">
-        <div className="mx-auto mb-4 grid size-24 place-items-center rounded-full border-2 border-ink bg-sun-soft text-5xl shadow-[4px_4px_0_var(--shadow)]">
-          <span aria-hidden="true">🌮</span>
-        </div>
-        <p className="font-display text-4xl leading-none font-bold">Taco Journal</p>
-        <p className="mt-2 text-muted">Every taco worth remembering.</p>
-      </div>
-
-      <div className="card space-y-5 border-ink p-5 shadow-[4px_4px_0_var(--shadow)]">
-        <Outlet />
-      </div>
-
-      <p className="mt-6 text-center text-xs text-muted">
-        Demo mode · accounts stay on this device until we connect a backend.
-      </p>
-    </div>
+    <AuthShell>
+      <Outlet />
+    </AuthShell>
   )
 }
 

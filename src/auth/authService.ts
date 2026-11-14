@@ -18,18 +18,27 @@ export class AuthError extends Error {
   }
 }
 
+export interface SignUpResult {
+  /** null when the person must confirm their email before they can sign in */
+  user: User | null
+  needsEmailConfirmation: boolean
+}
+
 /**
- * The only surface the UI uses for accounts. Today it is a local demo
- * (localAuthService below). Later, a Supabase implementation of this same
- * interface (supabase.auth.signUp / signInWithPassword / signOut /
- * resetPasswordForEmail / getSession) can replace it in auth/index.ts.
+ * The only surface the UI uses for accounts. Two implementations exist:
+ * supabaseAuthService.ts (real accounts) and localAuthService below (demo
+ * mode, used when Supabase env values are missing). auth/index.ts picks one.
  */
 export interface AuthService {
   getSession(): Promise<User | null>
   signIn(email: string, password: string): Promise<User>
-  signUp(name: string, email: string, password: string): Promise<User>
+  signUp(name: string, email: string, password: string): Promise<SignUpResult>
   signOut(): Promise<void>
   requestPasswordReset(email: string): Promise<void>
+  /** Sets a new password for the signed-in person (used after a reset link). */
+  updatePassword(password: string): Promise<void>
+  /** Called whenever the signed-in person changes. Returns an unsubscribe function. */
+  onChange(callback: (user: User | null) => void): () => void
 }
 
 // ---- local demo implementation ---------------------------------------------
@@ -70,7 +79,7 @@ export const localAuthService: AuthService = {
     const user: User = { id: newId(), name: name.trim(), email: normalized }
     localStorage.setItem(ACCOUNTS_KEY, JSON.stringify([...accounts, user]))
     localStorage.setItem(SESSION_KEY, JSON.stringify(user))
-    return user
+    return { user, needsEmailConfirmation: false }
   },
 
   async signIn(email, _password) {
@@ -90,5 +99,13 @@ export const localAuthService: AuthService = {
   async requestPasswordReset(_email) {
     // Real services answer the same way whether or not the email exists.
     await wait()
+  },
+
+  async updatePassword(_password) {
+    await wait()
+  },
+
+  onChange() {
+    return () => {}
   },
 }

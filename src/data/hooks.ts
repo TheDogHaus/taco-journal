@@ -63,6 +63,12 @@ export function useClearAll() {
 
 const urlCache = new Map<string, string>()
 
+/** Forget cached photo URLs (called when the signed-in person changes). */
+export function clearPhotoUrlCache(): void {
+  for (const url of urlCache.values()) URL.revokeObjectURL(url)
+  urlCache.clear()
+}
+
 /** Object URL for a stored photo id (cached for the life of the page). */
 export function usePhotoUrl(id: string | undefined): string | undefined {
   const [loaded, setLoaded] = useState<{ id: string; url: string }>()

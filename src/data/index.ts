@@ -1,5 +1,7 @@
+import { isSupabaseConfigured } from '../lib/supabase'
 import { localRepository } from './localRepository'
 import type { JournalRepository } from './repository'
+import { supabaseRepository } from './supabaseRepository'
 
-// Swap this one line for a Supabase-backed repository when the backend exists.
-export const repo: JournalRepository = localRepository
+// Your account's data in Supabase when it is configured, otherwise the local demo store.
+export const repo: JournalRepository = isSupabaseConfigured ? supabaseRepository : localRepository

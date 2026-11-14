@@ -5,6 +5,7 @@ import { AuthLayout } from './features/auth/AuthLayout'
 import { CreateAccountPage } from './features/auth/CreateAccountPage'
 import { ForgotPasswordPage } from './features/auth/ForgotPasswordPage'
 import { RequireAuth } from './features/auth/RequireAuth'
+import { ResetPasswordPage } from './features/auth/ResetPasswordPage'
 import { SignInPage } from './features/auth/SignInPage'
 import { CapturePage } from './features/capture/CapturePage'
 import { InsightsPage } from './features/insights/InsightsPage'
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="create-account" element={<CreateAccountPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
         </Route>
+        <Route path="reset-password" element={<ResetPasswordPage />} />
         <Route element={<RequireAuth />}>
           <Route element={<TabsLayout />}>
             <Route index element={<JournalPage />} />

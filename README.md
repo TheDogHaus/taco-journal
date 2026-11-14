@@ -25,7 +25,24 @@ On the empty Journal screen, tap **Try it with sample tacos** to see it populate
 - Minimum for any entry: **restaurant, reaction, and at least one photo** (max 3 per visit).
 - Search with filters, restaurant pages, and an Insights screen.
 
-## Where the Supabase swap happens
+## Connecting Supabase
+
+Without Supabase settings the app runs in **demo mode** (data and accounts stay in
+the browser). To use a real backend:
+
+1. In the Supabase dashboard open **SQL Editor**, paste in
+   `supabase/migrations/20261113000000_initial_schema.sql`, and run it. It creates
+   the tables, per-user security rules and the private `food-photos` bucket.
+2. Copy `.env.example` to `.env.local` and fill in your project URL and the
+   **publishable** key (Project Settings -> API Keys). Never use the secret key.
+3. In **Authentication -> URL Configuration** set the Site URL to
+   `http://localhost:5173` and add `http://localhost:5173/reset-password` to the
+   Redirect URLs (add your real domain too once deployed).
+4. Optional: switch off **Confirm email** under Authentication -> Sign In / Providers
+   -> Email so new accounts can sign in immediately.
+5. Restart `npm run dev`.
+
+## Where the Supabase swap happens (already done)
 
 All data access goes through the `JournalRepository` interface in
 `src/data/repository.ts`. Today it is implemented by `src/data/localRepository.ts`

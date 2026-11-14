@@ -21,6 +21,7 @@ export function CreateAccountPage() {
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string; form?: string }>({})
   const [busy, setBusy] = useState(false)
+  const [confirmEmail, setConfirmEmail] = useState<string | null>(null)
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -34,8 +35,14 @@ export function CreateAccountPage() {
 
     setBusy(true)
     try {
-      const user = await signUp(name, email, password)
-      toast.show(`Welcome, ${firstName(user.name)}! Let’s log some tacos.`)
+      const result = await signUp(name, email, password)
+      if (result.user) {
+        toast.show(`Welcome, ${firstName(result.user.name)}! Let’s log some tacos.`)
+      } else {
+        // Email confirmation is switched on in the project: they must tap the link first.
+        setConfirmEmail(email.trim())
+        setBusy(false)
+      }
     } catch (err) {
       if (err instanceof AuthError) {
         setErrors(err.field ? { [err.field]: err.message } : { form: err.message })
@@ -44,6 +51,26 @@ export function CreateAccountPage() {
       }
       setBusy(false)
     }
+  }
+
+  if (confirmEmail) {
+    return (
+      <>
+        <div className="text-center">
+          <div className="mx-auto mb-3 grid size-16 place-items-center rounded-full border-2 border-ink bg-lime-soft text-3xl">
+            <span aria-hidden="true">📬</span>
+          </div>
+          <h1 className="font-display text-2xl font-bold">Confirm your email</h1>
+          <p className="mt-1 text-muted">
+            We sent a link to <strong className="text-ink">{confirmEmail}</strong>. Tap it to finish creating your
+            account.
+          </p>
+        </div>
+        <Link to="/sign-in" className="btn btn-primary w-full">
+          Back to sign in
+        </Link>
+      </>
+    )
   }
 
   return (

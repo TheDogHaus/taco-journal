@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
+import { AuthError } from '../../auth/authService'
 import { validateEmail } from '../../auth/validation'
 import { TextField } from './TextField'
 
@@ -21,8 +22,8 @@ export function ForgotPasswordPage() {
     try {
       await requestPasswordReset(email)
       setSentTo(email.trim())
-    } catch {
-      setError('Something went wrong. Please try again.')
+    } catch (err) {
+      setError(err instanceof AuthError ? err.message : 'Something went wrong. Please try again.')
     } finally {
       setBusy(false)
     }
