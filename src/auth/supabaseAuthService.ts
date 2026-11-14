@@ -79,6 +79,25 @@ export const supabaseAuthService: AuthService = {
     if (error) throw friendly(error)
   },
 
+  async changePassword(currentPassword, newPassword) {
+    const sb = getSupabase()
+    const { data } = await sb.auth.getSession()
+    const email = data.session?.user.email
+    if (!email) throw new AuthError('Please sign in again to change your password.')
+
+    // Prove it's really them: signing in with the current password is the check.
+    const { error: verifyError } = await sb.auth.signInWithPassword({ email, password: currentPassword })
+    if (verifyError) {
+      if (verifyError.code === 'invalid_credentials') {
+        throw new AuthError("That isn't your current password.", 'currentPassword')
+      }
+      throw friendly(verifyError)
+    }
+
+    const { error } = await sb.auth.updateUser({ password: newPassword })
+    if (error) throw friendly(error)
+  },
+
   onPasswordRecovery(callback) {
     const { data } = getSupabase().auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') callback()

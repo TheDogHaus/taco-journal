@@ -4,6 +4,7 @@ import { useToast } from '../../components/Toast'
 import { useClearAll, useLoadSampleData, useVisitViews } from '../../data/hooks'
 import { repo } from '../../data'
 import { isSupabaseConfigured } from '../../lib/supabase'
+import { ChangePasswordCard } from './ChangePasswordCard'
 
 export function MePage() {
   const toast = useToast()
@@ -52,6 +53,8 @@ export function MePage() {
             Sign out
           </button>
         </section>
+
+        <ChangePasswordCard />
 
         <section className="card space-y-2">
           {isSupabaseConfigured ? (

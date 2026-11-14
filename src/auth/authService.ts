@@ -6,7 +6,7 @@ export interface User {
   email: string
 }
 
-export type AuthField = 'name' | 'email' | 'password'
+export type AuthField = 'name' | 'email' | 'password' | 'currentPassword'
 
 /** An error that can be shown next to a specific form field. */
 export class AuthError extends Error {
@@ -37,6 +37,8 @@ export interface AuthService {
   requestPasswordReset(email: string): Promise<void>
   /** Sets a new password for the signed-in person (used after a reset link). */
   updatePassword(password: string): Promise<void>
+  /** For a signed-in person: checks their current password, then sets the new one. */
+  changePassword(currentPassword: string, newPassword: string): Promise<void>
   /** Called whenever the signed-in person changes. Returns an unsubscribe function. */
   onChange(callback: (user: User | null) => void): () => void
   /** Called when the person arrives from a "reset your password" email link. */
@@ -104,6 +106,11 @@ export const localAuthService: AuthService = {
   },
 
   async updatePassword(_password) {
+    await wait()
+  },
+
+  async changePassword(_currentPassword, _newPassword) {
+    // Demo mode never stores passwords, so there is nothing to check or change.
     await wait()
   },
 

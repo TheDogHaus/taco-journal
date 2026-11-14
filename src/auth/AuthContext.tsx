@@ -14,6 +14,7 @@ interface AuthContextValue {
   signOut: () => Promise<void>
   requestPasswordReset: (email: string) => Promise<void>
   updatePassword: (password: string) => Promise<void>
+  changePassword: (currentPassword: string, newPassword: string) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -86,6 +87,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signOut,
       requestPasswordReset: (email: string) => authService.requestPasswordReset(email),
       updatePassword: (password: string) => authService.updatePassword(password),
+      changePassword: (currentPassword: string, newPassword: string) =>
+        authService.changePassword(currentPassword, newPassword),
     }),
     [checked, user, signIn, signUp, signOut],
   )
