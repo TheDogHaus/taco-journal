@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ActionBar, TopBar } from '../../components/PageHeader'
 import { PhotoPicker } from '../../components/PhotoPicker'
 import { ReactionPicker } from '../../components/ReactionPicker'
@@ -75,7 +75,16 @@ export function CapturePage() {
 
   return (
     <div className="pb-36">
-      <TopBar title="Quick bite 🌮" back="close" widthClass={WIDTH} />
+      <TopBar
+        title="Quick bite 🌮"
+        back="close"
+        widthClass={WIDTH}
+        right={
+          <Link to="/visit/new" className="btn btn-ghost btn-sm shrink-0 underline underline-offset-4">
+            Full entry form →
+          </Link>
+        }
+      />
       <div className={`mx-auto w-full space-y-6 px-4 pt-5 md:px-8 md:pt-8 ${WIDTH}`}>
         <div className="space-y-5 md:grid md:grid-cols-2 md:items-start md:gap-8 md:space-y-0">
           <div>

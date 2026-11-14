@@ -26,6 +26,8 @@ export function relativeDay(iso: string): string {
 }
 
 export const formatFullDate = (iso: string) => fullFmt.format(new Date(iso))
+/** "Nov 14, 2026" */
+export const formatShortDate = (iso: string) => dayYearFmt.format(new Date(iso))
 export const monthLabel = (iso: string) => monthFmt.format(new Date(iso))
 export const shortMonth = (d: Date) => shortMonthFmt.format(d)
 

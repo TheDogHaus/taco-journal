@@ -1,12 +1,10 @@
-import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { firstName } from '../../auth/validation'
 import { PhotoImg } from '../../components/PhotoImg'
 import { EmptyState } from '../../components/PageHeader'
 import { useLoadSampleData, useVisitViews } from '../../data/hooks'
-import type { VisitView } from '../../data/types'
-import { monthKey, monthLabel, relativeDay } from '../../lib/dates'
+import { formatShortDate } from '../../lib/dates'
 import { VisitCard } from './VisitCard'
 
 export function JournalPage() {
@@ -15,16 +13,6 @@ export function JournalPage() {
   const sample = useLoadSampleData()
 
   const drafts = views.filter((v) => v.status === 'quick')
-  const groups = useMemo(() => {
-    const map = new Map<string, VisitView[]>()
-    for (const v of views) {
-      const key = monthKey(v.visitedAt)
-      const list = map.get(key)
-      if (list) list.push(v)
-      else map.set(key, [v])
-    }
-    return [...map.values()]
-  }, [views])
 
   return (
     <div>
@@ -35,18 +23,13 @@ export function JournalPage() {
               Hola, {firstName(user.name)} <span aria-hidden="true">👋</span>
             </p>
           )}
-          <h1 className="font-display text-4xl leading-none font-bold md:text-5xl">Your Taco Journal</h1>
+          <h1 className="font-display text-4xl leading-none font-bold md:text-5xl">My Taco Journal</h1>
           <p className="mt-2 text-muted">
             {views.length > 0
               ? `${views.length} ${views.length === 1 ? 'bite' : 'bites'} across ${restaurants.length} ${restaurants.length === 1 ? 'spot' : 'spots'}`
               : 'Every taco worth remembering.'}
           </p>
         </div>
-        {views.length > 0 && (
-          <Link to="/visit/new" className="btn btn-secondary hidden md:inline-flex">
-            Add a full entry
-          </Link>
-        )}
       </header>
 
       {isLoading ? (
@@ -85,7 +68,7 @@ export function JournalPage() {
                       <PhotoImg id={v.photoIds[0]} alt="" className="h-28 w-full" />
                       <div className="p-3">
                         <p className="truncate font-display font-semibold">{v.restaurant.name}</p>
-                        <p className="text-xs text-muted">{relativeDay(v.visitedAt)}</p>
+                        <p className="text-xs text-muted">{formatShortDate(v.visitedAt)}</p>
                         <p className="mt-2 text-sm font-extrabold text-salsa-text">Finish entry →</p>
                       </div>
                     </Link>
@@ -95,22 +78,19 @@ export function JournalPage() {
             </section>
           )}
 
-          {groups.map((group) => (
-            <section key={monthKey(group[0].visitedAt)} aria-label={monthLabel(group[0].visitedAt)}>
-              <h2 className="mb-3 font-display text-lg font-semibold text-muted">{monthLabel(group[0].visitedAt)}</h2>
-              <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                {group.map((v) => (
-                  <li key={v.id}>
-                    <VisitCard visit={v} />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-
-          <Link to="/visit/new" className="btn btn-secondary w-full md:hidden">
-            Add a full entry
-          </Link>
+          {/* Newest first. Each card carries its own date. */}
+          <section aria-labelledby="all-bites">
+            <h2 id="all-bites" className="mb-3 font-display text-lg font-semibold">
+              All bites <span className="text-muted">· newest first</span>
+            </h2>
+            <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              {views.map((v) => (
+                <li key={v.id}>
+                  <VisitCard visit={v} />
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
       )}
     </div>
