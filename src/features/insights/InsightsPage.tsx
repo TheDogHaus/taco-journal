@@ -61,19 +61,20 @@ export function InsightsPage() {
 
   return (
     <div>
-      <header className="px-4 pt-6 pb-4">
-        <h1 className="font-display text-3xl font-bold">Your taco story</h1>
+      <header className="px-4 pt-6 pb-4 md:pt-10 md:pb-6">
+        <h1 className="font-display text-3xl font-bold md:text-5xl">Your taco story</h1>
         <p className="text-muted">What your bites say about you.</p>
       </header>
 
       <div className="space-y-7 px-4">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
           <Tile value={String(views.length)} label="Bites logged" tone="bg-sun-soft" />
           <Tile value={String(restaurants.length)} label="Different spots" tone="bg-salsa-soft" />
           <Tile value={data.avg.toFixed(1)} label="Average rating" tone="bg-lime-soft" />
           <Tile value={String(data.favorites)} label="Favorites" tone="bg-surface" />
         </div>
 
+        <div className="grid items-start gap-6 lg:grid-cols-2">
         {data.tacos.length > 0 && (
           <section className="card">
             <h2 className="mb-3 font-display text-lg font-semibold">Your go-to tacos</h2>
@@ -148,6 +149,7 @@ export function InsightsPage() {
             </ul>
           </section>
         )}
+        </div>
       </div>
     </div>
   )

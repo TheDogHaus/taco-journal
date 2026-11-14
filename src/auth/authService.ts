@@ -39,6 +39,8 @@ export interface AuthService {
   updatePassword(password: string): Promise<void>
   /** Called whenever the signed-in person changes. Returns an unsubscribe function. */
   onChange(callback: (user: User | null) => void): () => void
+  /** Called when the person arrives from a "reset your password" email link. */
+  onPasswordRecovery(callback: () => void): () => void
 }
 
 // ---- local demo implementation ---------------------------------------------
@@ -106,6 +108,10 @@ export const localAuthService: AuthService = {
   },
 
   onChange() {
+    return () => {}
+  },
+
+  onPasswordRecovery() {
     return () => {}
   },
 }

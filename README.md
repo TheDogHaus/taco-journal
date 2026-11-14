@@ -1,6 +1,8 @@
 # Taco Journal 🌮
 
-A warm, playful, mobile-first journal for the tacos you never want to forget.
+A warm, playful, responsive website for the tacos you never want to forget. It works
+on phones, tablets and desktops: a top navigation bar, card grids that grow with the
+screen, a filter sidebar on Search and two-column pages on large screens.
 Front end only for now (React + Vite + TypeScript + Tailwind v4); data is stored
 in the browser. Supabase comes later.
 

@@ -6,7 +6,7 @@ import { isSupabaseConfigured } from '../../lib/supabase'
 /** Branded frame shared by every signed-out screen. */
 export function AuthShell({ children }: { children: ReactNode }) {
   return (
-    <div className="px-5 pt-10 pb-10">
+    <div className="mx-auto w-full max-w-md px-5 pt-10 pb-10 md:pt-20">
       <div className="mb-7 text-center">
         <div className="mx-auto mb-4 grid size-24 place-items-center rounded-full border-2 border-ink bg-sun-soft text-5xl shadow-[4px_4px_0_var(--shadow)]">
           <span aria-hidden="true">🌮</span>

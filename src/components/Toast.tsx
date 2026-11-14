@@ -28,7 +28,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       <div
         role="status"
         aria-live="polite"
-        className="pointer-events-none fixed inset-x-0 bottom-28 z-50 mx-auto flex max-w-md justify-center px-4"
+        className="pointer-events-none fixed inset-x-0 bottom-24 z-50 mx-auto flex max-w-md justify-center px-4"
       >
         {message && (
           <div className="pop-in rounded-full border-2 border-ink bg-ink px-5 py-3 text-center text-sm font-bold text-bg shadow-[3px_3px_0_var(--salsa)]">

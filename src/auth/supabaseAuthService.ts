@@ -79,6 +79,13 @@ export const supabaseAuthService: AuthService = {
     if (error) throw friendly(error)
   },
 
+  onPasswordRecovery(callback) {
+    const { data } = getSupabase().auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') callback()
+    })
+    return () => data.subscription.unsubscribe()
+  },
+
   onChange(callback) {
     const { data } = getSupabase().auth.onAuthStateChange((_event, session) => {
       // Keep this synchronous: calling Supabase from inside this callback can deadlock.

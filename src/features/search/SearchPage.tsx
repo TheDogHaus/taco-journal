@@ -47,12 +47,13 @@ export function SearchPage() {
 
   return (
     <div>
-      <header className="px-4 pt-6 pb-3">
-        <h1 className="font-display text-3xl font-bold">Search</h1>
+      <header className="px-4 pt-6 pb-3 md:pt-10 md:pb-5">
+        <h1 className="font-display text-3xl font-bold md:text-5xl">Search</h1>
         <p className="text-muted">Find that one amazing al pastor.</p>
       </header>
 
-      <div className="space-y-3 px-4">
+      <div className="px-4">
+        <div className="max-w-2xl space-y-3">
         <div className="relative">
           <Icon name="search" size={20} className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-muted" />
           <input
@@ -68,7 +69,7 @@ export function SearchPage() {
         <div className="flex items-center justify-between gap-2">
           <button
             type="button"
-            className="btn btn-secondary btn-sm"
+            className="btn btn-secondary btn-sm lg:invisible"
             aria-expanded={open}
             aria-controls="filter-panel"
             onClick={() => setOpen((o) => !o)}
@@ -88,9 +89,13 @@ export function SearchPage() {
             </select>
           </label>
         </div>
+        </div>
 
-        {open && (
-          <div id="filter-panel" className="card pop-in space-y-4">
+        <div className="mt-3 lg:mt-6 lg:grid lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start lg:gap-8">
+        <div
+          id="filter-panel"
+          className={`card space-y-4 lg:sticky lg:top-28 lg:block ${open ? 'pop-in' : 'hidden'}`}
+        >
             <FilterGroup label="How it was">
               {REACTIONS.map((r) => (
                 <button
@@ -190,11 +195,9 @@ export function SearchPage() {
                 Clear filters
               </button>
             )}
-          </div>
-        )}
-      </div>
+        </div>
 
-      <div className="px-4 pt-4">
+        <div className="pt-4 lg:pt-0">
         {isLoading ? null : views.length === 0 ? (
           <EmptyState emoji="🔎" title="Nothing to search yet">
             <p>Log a few bites and they will show up here.</p>
@@ -212,7 +215,7 @@ export function SearchPage() {
               {results.length} {results.length === 1 ? 'result' : 'results'}
               {hasAny ? '' : ' · everything'}
             </p>
-            <ul className="space-y-3">
+            <ul className="grid gap-3 md:grid-cols-2">
               {results.map((v) => (
                 <li key={v.id}>
                   <VisitCard visit={v} />
@@ -221,6 +224,8 @@ export function SearchPage() {
             </ul>
           </>
         )}
+        </div>
+        </div>
       </div>
     </div>
   )

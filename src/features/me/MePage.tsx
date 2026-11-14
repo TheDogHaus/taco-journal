@@ -33,9 +33,9 @@ export function MePage() {
   }
 
   return (
-    <div>
-      <header className="px-4 pt-6 pb-4">
-        <h1 className="font-display text-3xl font-bold">Me</h1>
+    <div className="mx-auto max-w-2xl">
+      <header className="px-4 pt-6 pb-4 md:pt-10 md:pb-6">
+        <h1 className="font-display text-3xl font-bold md:text-5xl">Me</h1>
         <p className="text-muted">Your taco headquarters.</p>
       </header>
 
@@ -101,7 +101,7 @@ export function MePage() {
           </button>
         </section>
 
-        <p className="pt-2 text-center text-xs text-muted">Taco Journal · v0.1 · made with salsa</p>
+        <p className="pt-2 text-center text-xs text-muted">Taco Journal · v0.1</p>
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { TopBar } from '../../components/PageHeader'
+import { ActionBar, TopBar } from '../../components/PageHeader'
 import { PhotoPicker } from '../../components/PhotoPicker'
 import { ReactionPicker } from '../../components/ReactionPicker'
 import { RestaurantField } from '../../components/RestaurantField'
@@ -10,6 +10,8 @@ import { useSaveVisit, useVisitViews } from '../../data/hooks'
 import type { Dish, PhotoDraft, Reaction } from '../../data/types'
 import { newId } from '../../lib/ids'
 import { normalize } from '../../lib/stats'
+
+const WIDTH = 'max-w-3xl'
 
 /** Quick capture: the minimum needed to remember a bite, in ~15 seconds. */
 export function CapturePage() {
@@ -72,23 +74,25 @@ export function CapturePage() {
   }
 
   return (
-    <div className="pb-40">
-      <TopBar title="Quick bite 🌮" back="close" />
-      <div className="space-y-5 px-4 pt-4">
-        <div>
-          <p className="label">Photo (optional)</p>
-          <PhotoPicker photos={photos} onChange={setPhotos} />
-        </div>
+    <div className="pb-36">
+      <TopBar title="Quick bite 🌮" back="close" widthClass={WIDTH} />
+      <div className={`mx-auto w-full space-y-6 px-4 pt-5 md:px-8 md:pt-8 ${WIDTH}`}>
+        <div className="space-y-5 md:grid md:grid-cols-2 md:items-start md:gap-8 md:space-y-0">
+          <div>
+            <p className="label">Photo (optional)</p>
+            <PhotoPicker photos={photos} onChange={setPhotos} />
+          </div>
 
-        <RestaurantField
-          name={name}
-          city={cityValue}
-          onChange={(v) => {
-            setName(v.name)
-            setCity(v.city)
-            setCityTouched(true)
-          }}
-        />
+          <RestaurantField
+            name={name}
+            city={cityValue}
+            onChange={(v) => {
+              setName(v.name)
+              setCity(v.city)
+              setCityTouched(true)
+            }}
+          />
+        </div>
 
         <div>
           <p className="label">How was it?</p>
@@ -115,24 +119,24 @@ export function CapturePage() {
         </div>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t-2 border-line bg-bg/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur">
+      <ActionBar widthClass={WIDTH}>
         {error && (
-          <p role="alert" className="mb-2 text-center text-sm font-bold text-salsa-text">
+          <p role="alert" className="text-center text-sm font-bold text-salsa-text md:text-right">
             {error}
           </p>
         )}
         {missing.length > 0 && !error && (
-          <p className="mb-2 text-center text-sm text-muted">Still need: {missing.join(', ')}</p>
+          <p className="text-center text-sm text-muted md:text-right">Still need: {missing.join(', ')}</p>
         )}
         <button
           type="button"
-          className="btn btn-primary w-full text-lg"
+          className="btn btn-primary w-full text-lg md:w-auto md:min-w-56"
           disabled={missing.length > 0 || save.isPending}
           onClick={() => void onSave()}
         >
           {save.isPending ? 'Saving…' : 'Save bite'}
         </button>
-      </div>
+      </ActionBar>
     </div>
   )
 }

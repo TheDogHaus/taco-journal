@@ -31,7 +31,7 @@ export function VisitDetailPage() {
   if (!visit) {
     return (
       <>
-        <TopBar title="Not found" />
+        <TopBar variant="inline" title="Not found" />
         <EmptyState emoji="🫓" title="Couldn't find that bite">
           <p>It may have been deleted.</p>
           <Link to="/" className="btn btn-primary mt-5">
@@ -56,6 +56,7 @@ export function VisitDetailPage() {
   return (
     <div>
       <TopBar
+        variant="inline"
         title="Your bite"
         right={
           <button
@@ -72,19 +73,27 @@ export function VisitDetailPage() {
         }
       />
 
+      <div className="lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
       {visit.photoIds.length > 0 ? (
-        <ul className="flex snap-x snap-mandatory overflow-x-auto" aria-label="Photos">
+        <ul
+          className="flex snap-x snap-mandatory overflow-x-auto lg:snap-none lg:flex-col lg:gap-4 lg:overflow-visible"
+          aria-label="Photos"
+        >
           {visit.photoIds.map((pid, i) => (
             <li key={pid} className="w-full shrink-0 snap-center">
-              <PhotoImg id={pid} alt={`Photo ${i + 1} from ${visit.restaurant.name}`} className="aspect-4/3 w-full" />
+              <PhotoImg
+                id={pid}
+                alt={`Photo ${i + 1} from ${visit.restaurant.name}`}
+                className="aspect-4/3 w-full lg:rounded-3xl lg:border-2 lg:border-ink"
+              />
             </li>
           ))}
         </ul>
       ) : (
-        <PhotoImg alt="No photo" className="aspect-4/3 w-full text-6xl" />
+        <PhotoImg alt="No photo" className="aspect-4/3 w-full text-6xl lg:rounded-3xl lg:border-2 lg:border-ink" />
       )}
 
-      <div className="space-y-5 px-4 py-5">
+      <div className="space-y-5 px-4 py-5 lg:px-0 lg:pt-0">
         {visit.status === 'quick' && (
           <div className="rounded-3xl border-2 border-ink bg-sun-soft p-4">
             <p className="font-display text-lg font-semibold">Quick bite — details welcome</p>
@@ -192,6 +201,7 @@ export function VisitDetailPage() {
             <Icon name="trash" size={18} /> Delete
           </button>
         </div>
+      </div>
       </div>
     </div>
   )

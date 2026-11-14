@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Icon } from '../../components/Icon'
-import { Section, TopBar } from '../../components/PageHeader'
+import { ActionBar, Section, TopBar } from '../../components/PageHeader'
 import { PhotoPicker } from '../../components/PhotoPicker'
 import { ReactionPicker } from '../../components/ReactionPicker'
 import { RestaurantField } from '../../components/RestaurantField'
@@ -14,6 +14,9 @@ import { MOODS, OCCASIONS, PRICE_TIERS, REACTIONS, SALSA_HEAT } from '../../lib/
 import { isoFromDateInput, toDateInput } from '../../lib/dates'
 import { newId } from '../../lib/ids'
 import { normalize } from '../../lib/stats'
+
+/** Content width of the entry form: single column up to tablet, two columns on desktop. */
+const WIDTH = 'max-w-5xl'
 
 interface FormState {
   name: string
@@ -172,9 +175,10 @@ export function VisitForm({
   }
 
   return (
-    <div className="pb-44">
-      <TopBar title={title} back="close" />
-      <div className="space-y-4 px-4 pt-4">
+    <div className="pb-36">
+      <TopBar title={title} back="close" widthClass={WIDTH} />
+      {/* Sections stack on phones and flow into two balanced columns on large screens. */}
+      <div className={`mx-auto w-full px-4 pt-5 md:px-8 md:pt-8 lg:columns-2 lg:gap-5 ${WIDTH}`}>
         <Section emoji="📸" title="Photos" hint="Optional, up to three.">
           <PhotoPicker photos={s.photos} onChange={(photos) => patch({ photos })} />
         </Section>
@@ -354,24 +358,24 @@ export function VisitForm({
         </Section>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t-2 border-line bg-bg/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur">
+      <ActionBar widthClass={WIDTH}>
         {error && (
-          <p role="alert" className="mb-2 text-center text-sm font-bold text-salsa-text">
+          <p role="alert" className="text-center text-sm font-bold text-salsa-text md:text-right">
             {error}
           </p>
         )}
         {missing.length > 0 && !error && (
-          <p className="mb-2 text-center text-sm text-muted">Still need: {missing.join(', ')}</p>
+          <p className="text-center text-sm text-muted md:text-right">Still need: {missing.join(', ')}</p>
         )}
         <button
           type="button"
-          className="btn btn-primary w-full text-lg"
+          className="btn btn-primary w-full text-lg md:w-auto md:min-w-56"
           disabled={missing.length > 0 || save.isPending}
           onClick={() => void onSave()}
         >
           {save.isPending ? 'Saving…' : 'Save entry'}
         </button>
-      </div>
+      </ActionBar>
     </div>
   )
 }
